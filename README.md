@@ -3,7 +3,7 @@ Attempt to create a minimal EDK2 for Exynos 850 devices
 # credits: sonic011gamer for the 7885 port
 
 ## Status
-Boots to UEFI Shell.
+not booting yet
 
 ### Building
 Tested on Ubuntu 24.04.
@@ -30,7 +30,12 @@ Also see [EDK2 website](https://github.com/tianocore/tianocore.github.io/wiki/Us
 
 ## Tutorials
 
-First run ./firstrun.sh
+### ESSENTIAL:
+
+FIRST, RUN ./edk2version.sh
+or it will NOT compile
+
+Then, ./firstrun.sh
 
 Then, ./build.sh.
 
