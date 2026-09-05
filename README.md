@@ -1,4 +1,6 @@
-Attempt to create a minimal EDK2 for Exynos 7885 devices
+Attempt to create a minimal EDK2 for Exynos 850 devices
+
+# credits: sonic011gamer for the 7885 port
 
 ## Status
 Boots to UEFI Shell.
@@ -103,7 +105,7 @@ Now you can proceed.
 > [!NOTE]
 > You shouldn't make the device use all the ram yet as it may not boot, stick eith 1.5GB or smaller to be safe.
 
-Go into EXYNOS7885Pkg/Devices and copy a10.dsc to (devicename).dsc, for example we'll copy a10.dsc into s20.dsc
+Go into EXYNOS850Pkg/Devices and copy a10.dsc to (devicename).dsc, for example we'll copy a10.dsc into s20.dsc
 
 Now theres only a couple things to edit here thankfully.
 
@@ -111,21 +113,21 @@ First thing to edit is ```gArmTokenSpaceGuid.PcdSystemMemoryBase```, replace "0x
 
 Final things to edit is the framebuffer area, to avoid boring you with more text ill just put the things needing to be edited.
 
-  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)```
+  ```gEXYNOS850PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)```
   
-  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|(Screen resolution width)```
+  ```gEXYNOS850PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|(Screen resolution width)```
   
-  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|(Screen resolution height)```
+  ```gEXYNOS850PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|(Screen resolution height)```
 
-  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|(Screen resolution width)```
+  ```gEXYNOS850PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|(Screen resolution width)```
   
-  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|(Screen resolution height)```
+  ```gEXYNOS850PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|(Screen resolution height)```
 
 After you've edited that you can save the file and close it.
 
 ### Correcting the interrupt controller addresses
 
-Open up EXYNOS7885Pkg/EXYNOS7885.dsc and replace ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000``` with ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt address you noted)``` after which  replace ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000``` with ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt address you noted)```
+Open up EXYNOS850Pkg/EXYNOS850.dsc and replace ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000``` with ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt address you noted)``` after which  replace ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000``` with ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt address you noted)```
 
 You can now save and close the file.
 
@@ -145,8 +147,8 @@ void enableDecon()
 The assembly you'll want is in the middle.
 
 
-Go to EXYNOS7885Pkg/Library
-/EXYNOS7885PkgLib and open up "EXYNOS7885PkgHelper.S"
+Go to EXYNOS850Pkg/Library
+/EXYNOS850PkgLib and open up "EXYNOS850PkgHelper.S"
 
 Replace the ```enableDecon:``` function with the one you got from the online compiler (except for the last ret) then close and save the file.
 
@@ -168,7 +170,7 @@ You can now flash boot.tar onto your phone using ODIN3, Heimdall, or TWRP if you
 
 ### Getting EDK2 shell fullscreen
 
-If you made it this far, congratulations but you're here to get the shell fullscreen not to get some kind of trophy. To make the shell fullscreen open, up ```EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsole.c```, go to line 293,
+If you made it this far, congratulations but you're here to get the shell fullscreen not to get some kind of trophy. To make the shell fullscreen open, up ```EXYNOS850Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsole.c```, go to line 293,
 
 ```NewModeBuffer[ValidCount].Columns``` should equal your devices resolution width divided by 8 and ```NewModeBuffer[ValidCount].Rows``` should equal your devices resolution height divided by 19, obviously if any of the divisions have remainders (e.g 23.4) go down to the lowest whole number to be safe (e.g 23)
 
